@@ -34,4 +34,26 @@ describe('Voting', () => {
 
         expect(votedWith).to.equal('Trainspotting');
     });
+
+    it('adds label to the voted entry', () => {
+        const component = renderIntoDocument(
+            <Voting pair={["Trainspotting", "28 Days Later"]} hasVoted="Trainspotting" />
+        );
+
+        const buttons = scryRenderedDOMComponentsWithTag(component, 'button');
+        Simulate.click(buttons[0]);
+
+        expect(buttons[0].textContent).to.contain('Voted');
+    });
+
+    it('renders just the winner if there is one', () => {
+        const component = renderIntoDocument(
+            <Voting pair={["Trainspotting", "28 Days Later"]} winner="Trainspotting" />
+        );
+
+        const winner = ReactDOM.findDOMNode(component.refs.winner);
+        expect(winner).to.be.ok;
+        expect(winner.textContent).to.contain('Trainspotting');
+    });
+
 });
